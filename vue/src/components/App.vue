@@ -1,16 +1,19 @@
 <template>
   <div>
     <RouterView />
+    <NavigationPanel />
     <ModalContainer />
   </div>
 </template>
 
 <script>
 import ModalContainer from "@/components/parts/ModalContainer";
+import NavigationPanel from "./ui/NavigationPanel.vue";
 
 export default {
   components: {
-    ModalContainer
+    ModalContainer,
+    NavigationPanel
   }
 }
 </script>
@@ -41,7 +44,11 @@ section {
   }
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: @ffInter;
   color: @cBaseThree;
   margin: 0;
