@@ -1,6 +1,5 @@
 <template>
-  <div class="weddings-list">
-    <h2>Брачные союзы</h2>
+  <div v-if="weddings" class="weddings-list">
     <WeddingItem v-for="(wedding, index) in weddings" :key="index" :wedding="wedding" />
   </div>
 </template>

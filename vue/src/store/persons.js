@@ -1,7 +1,19 @@
 import { genHash } from "./modals"
 
 export const PERSONS = "persons"
-const initialState = []
+
+const initialState = [
+  {
+    id: '1',
+    secondName: 'Иванов',
+    firstName: 'Иван',
+    patronymicName: 'Иванович',
+    gender: 'male',
+
+    weddings: []
+  }
+]
+
 export default {
   namespaced: true,
   state: {
@@ -22,7 +34,10 @@ export default {
       localStorage.setItem(PERSONS, JSON.stringify(state.persons))
     },
     editPerson: (state, payload) => {
+      console.log(payload)
+      console.log(state.persons.find((p) => (p.id === payload.id)))
       state.persons = state.persons.map((p) => (p.id === payload.id ? { ...p, ...payload } : p))
+      console.log(state.persons)
       localStorage.setItem(PERSONS, JSON.stringify(state.persons))
     }
   },

@@ -1,23 +1,28 @@
 <template>
   <PageLayout>
-    <h1>{{ person.fullName }}</h1>
+    <section class="p-16">
+      <PersonCard :person="person" />
+    </section>
   </PageLayout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PageLayout from '../parts/PageLayout.vue';
+import PersonCard from '@/components/cards/PersonCard.vue';
 
 export default {
   name: 'PersonPage',
   components: {
-    PageLayout
+    PageLayout,
+    PersonCard
   },
   computed: {
+    ...mapGetters('persons', [
+      'getPersonById'
+    ]),
     person () {
-      // Здесь нужно получить объект человека по id из параметра страницы
-      return {
-        fullName: "Фамилия Имя Отчество" // Замените данными из объекта человека
-      }
+      return this.getPersonById(this.id)
     },
     id () {
       return this.$route.params.id

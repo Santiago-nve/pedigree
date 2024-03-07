@@ -1,9 +1,9 @@
 <template>
-  <div v-if="photo" class="photo-preview">
+  <div class="photo-preview">
     <img
       class="photo-preview__img"
       :class="'photo-preview__img--' + size"
-      :src="photo"
+      :src="imageSource"
       alt="Фото"
     >
   </div>
@@ -20,6 +20,11 @@ export default {
     size: {
       default: 'middle',
       type: String
+    }
+  },
+  computed: {
+    imageSource () {
+      return this.photo || require('@/assets/photo-default.jpg');
     }
   }
 }
