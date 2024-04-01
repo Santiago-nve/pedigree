@@ -1,8 +1,9 @@
 <template>
   <div>
-    <RouterView />
-    <ScreenSaver2 />
-    <ModalContainer />
+    <ScreenSaver2>
+      <RouterView />
+      <ModalContainer />
+    </ScreenSaver2>
   </div>
 </template>
 

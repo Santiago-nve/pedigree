@@ -1,7 +1,10 @@
 <template>
-  <div v-if="started" class="screensaver" :style="{ backgroundColor: backgroundColor }">
-    <img :src="logo"
-      :style="{ transform: `translate(${x}px, ${y}px)`, filter: `hue-rotate(${logoRotateColor}deg)`, width: `${width}px`, height: `${height}px` }">
+  <div @mousemove="startScreenSaverTimeout">
+    <slot></slot>
+    <div v-if="started" class="screensaver" :style="{ backgroundColor: backgroundColor }">
+      <img :src="logo"
+        :style="{ transform: `translate(${x}px, ${y}px)`, filter: `hue-rotate(${logoRotateColor}deg)`, width: `${width}px`, height: `${height}px` }">
+    </div>
   </div>
 </template>
 
@@ -19,7 +22,8 @@ export default {
       started: false,
       logo: require('../../assets/DVD_logo.svg'),
       signX: 1,
-      signY: 1
+      signY: 1,
+      timer: null
     };
   },
   mounted() {
@@ -48,15 +52,12 @@ export default {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
     startScreenSaverTimeout() {
-      let timer;
-      window.addEventListener('mousemove', () => {
-        clearTimeout(timer);
-        this.started = false;
-        timer = setTimeout(() => {
-          this.started = true;
-          this.startLogo();
-        }, 60000);
-      });
+      clearTimeout(this.timer);
+      this.started = false;
+      this.timer = setTimeout(() => {
+        this.started = true;
+        this.startLogo();
+      }, 60000);
     }
   }
 };
@@ -64,7 +65,7 @@ export default {
 
 <style scoped lang="less">
 .screensaver {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
