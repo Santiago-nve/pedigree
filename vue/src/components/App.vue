@@ -15,7 +15,27 @@ export default {
   components: {
     ModalContainer,
     ScreenSaver2
-  }
+  },
+  data () {
+    return {
+      isActive: true,
+      timer: null
+    }
+  },
+  mounted() {
+    this.resetTimer();
+  },
+  methods: {
+    resetTimer() {
+      this.isActive = true
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(() => {
+        this.isActive = false;
+      }, 5 * 60 * 1000)
+    },
+  },
 }
 </script>
 
