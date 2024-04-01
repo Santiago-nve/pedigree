@@ -54,42 +54,42 @@ export default {
   },
   computed: {
     type: {
-      get() {
+      get () {
         return this.value.type
       },
-      set(value) {
+      set (value) {
         this.emitChange({ type: value })
       }
     },
     rank: {
-      get() {
+      get () {
         return this.value.rank
       },
-      set(value) {
+      set (value) {
         this.emitChange({ rank: value })
       }
     },
     startDate: {
-      get() {
+      get () {
         return this.value.startDate
       },
-      set(value) {
+      set (value) {
         this.emitChange({ startDate: value })
       }
     },
     endDate: {
-      get() {
+      get () {
         return this.value.endDate
       },
-      set(value) {
+      set (value) {
         this.emitChange({ endDate: value })
       }
     },
     description: {
-      get() {
+      get () {
         return this.value.description
       },
-      set(value) {
+      set (value) {
         this.emitChange({ description: value })
       }
     }

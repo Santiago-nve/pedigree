@@ -8,7 +8,6 @@ import SettingsPage from '../components/pages/SettingsPage.vue'
 import PersonList from '../components/pages/PersonList.vue'
 import FeedbackPage from '@/components/pages/FeedbackPage.vue'
 import ServicePage from '@/components/pages/ServicePage.vue'
-
 import { RouteNames } from './routes'
 
 Vue.use(VueRouter)

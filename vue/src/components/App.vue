@@ -1,14 +1,15 @@
 <template>
   <div>
-    <RouterView/>
+    <RouterView />
     <ScreenSaver2 />
     <ModalContainer />
   </div>
 </template>
 
 <script>
-import ModalContainer from "@/components/parts/ModalContainer";
-import ScreenSaver2 from "@/components/modals/ScreenSaver2.vue";
+import ModalContainer from "@/components/parts/ModalContainer"
+import ScreenSaver2 from "@/components/modals/ScreenSaver2.vue"
+
 export default {
   components: {
     ModalContainer,
@@ -44,7 +45,11 @@ section {
   }
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: @ffInter;
   color: @cBaseThree;
   margin: 0;
@@ -105,5 +110,11 @@ h4 {
       min-height: 100px !important;
     }
   }
+}
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px;
 }
 </style>

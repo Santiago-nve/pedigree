@@ -9,7 +9,7 @@
       <ElOption
         v-for="person in persons"
         :key="person.id"
-        :label="person.name"
+        :label="fullName(person)"
         :value="person.id"
       />
     </ElSelect>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { formatPersonName } from '@/services/formatPersonName';
+
 export default {
   name: 'WeddingForm',
   model: {
@@ -81,6 +83,12 @@ export default {
         ...this.value,
         ...param
       })
+    },
+    fullName (partner) {
+      if (partner) {
+        return formatPersonName(partner, { short: false, access: this.needHide })
+      }
+      return ''
     }
   }
 }

@@ -71,14 +71,15 @@
         />
       </ElSelect>
     </div>
+    
     <h2>Военная служба</h2>
     <div 
       class="custom-form__full-width" 
       v-for="(military, index) in value.militaries" 
-      :key="index"
+      :key="'military' + index"
     >
       <div class ="person-page__header-wrapper">
-      <h3>Военная служба {{index + 1}}</h3>
+      <h3>Военная служба {{ index + 1 }}</h3>
         <button class="person-page__btn-close" @click="() => removeMilitaryForm(index)">
           ✖
         </button>
@@ -94,20 +95,22 @@
         Добавить
       </SimpleButton >
     </div>
+
     <h2>Брачные союзы</h2>
     <div 
       class="custom-form__full-width" 
       v-for="(wedding, index) in value.weddings" 
-      :key="index"
+      :key="'wedding' + index"
     >
       <div class ="person-page__header-wrapper">
-      <h2>Свадьба {{index + 1}}</h2>
+      <h2>Свадьба {{ index + 1 }}</h2>
         <button @click="() => removeWeddingForm(index)" class="person-page__btn-close ">
           ✖
         </button>
       </div>
       <WeddingForm
-        :value="wedding" :persons="partners"
+        :value="wedding" 
+        :persons="partners"
         class="custom-form__input"
         @change="(wedding) => setWeddingForm(wedding, index)"
       />
@@ -117,14 +120,15 @@
         Добавить 
       </SimpleButton >
     </div>
+
     <h2>Образование</h2>
     <div 
       class="custom-form__full-width" 
       v-for="(education, index) in value.educations" 
-      :key="index"
+      :key="'education' + index"
     >
       <div class ="person-page__header-wrapper">
-      <h2>Образование {{index + 1}}</h2>
+      <h2>Образование {{ index + 1 }}</h2>
         <button @click="() => removeEducationForm(index)" class="person-page__btn-close ">
           ✖
         </button>
@@ -140,14 +144,15 @@
         Добавить 
       </SimpleButton >
     </div>
+
     <h2>Работа</h2>
     <div 
       class="custom-form__full-width" 
       v-for="(work, index) in value.works" 
-      :key="index"
+      :key="'work' + index"
     >
       <div class ="person-page__header-wrapper">
-      <h2>Работа {{index + 1}}</h2>
+      <h2>Работа {{ index + 1 }}</h2>
         <button @click="() => removeWorkForm(index)" class="person-page__btn-close ">
           ✖
         </button>
@@ -163,20 +168,22 @@
         Добавить
       </SimpleButton >
     </div>
+
     <h2>Дети</h2>
     <div 
       class="custom-form__full-width" 
       v-for="(child, index) in value.children" 
-      :key="index"
+      :key="'child' + index"
     >
       <div class ="person-page__header-wrapper">
-      <h2>Ребёнок {{index + 1}}</h2>
+      <h2>Ребёнок {{ index + 1 }}</h2>
         <button @click="() => removeChildForm(index)" class="person-page__btn-close ">
           ✖
         </button>
       </div>
       <ChildForm
-        :value="child" :persons="children"
+        :value="child" 
+        :persons="childrens"
         class="custom-form__input"
         @change="(child) => setChildForm(child, index)"
       />
@@ -197,10 +204,7 @@ import ChildForm from '../forms/ChildForm.vue'
 import { mapGetters } from 'vuex'
 import EducationForm from '../forms/EducationForm.vue'
 import WorkForm from '../forms/WorkForm.vue'
-import { emptyWedding } from '@/services/person'
-import { emptyMilitary } from '@/services/person'
-import { emptyEducation } from '@/services/person'
-import { emptyWork } from '@/services/person'
+import { emptyWedding, emptyWork, emptyMilitary, emptyEducation } from '@/services/person'
 
 export default {
   name: 'PersonForm',
@@ -288,16 +292,16 @@ export default {
       }
     },
     access: {
-      get(){
-        if (this.value.access){
+      get () {
+        if (this.value.access) {
           return 'true'
         }
         else {
           return 'false'
         }
       },
-      set(value){
-        if (value == 'true'){
+      set (value) {
+        if (value == 'true') {
           value = true
         }
         else {
@@ -308,8 +312,8 @@ export default {
         })
       }
     },
-    
-    ...mapGetters('persons', [
+
+    ...mapGetters ('persons', [
       'filteredPersons',
       'getAllPersons',
       'getPersonById',
@@ -321,27 +325,30 @@ export default {
     person () {
       return this.getPersonById(this.id)
     },
-    partners() {
+    partners () {
       const customFilter = (person) => {
-        const partnerGender = this.person.gender === 'male' ? 'female' : 'male'
-        const birthDate = new Date(this.person.birthDate)
-        const deathDate = new Date(this.person.dieDate)
+        const partnerBirthDate = this.formatDate(person.birthDate)
+        const partnerDeathDate = this.formatDate(person.dieDate)
+        const deathDate = this.formatDate(this.value.dieDate)
+        const birthDate = this.formatDate(this.value.birthDate)
         return (
-          person.gender !== partnerGender &&
-          (!person.dieDate || new Date(person.dieDate) >birthDate) &&
-          (!person.birthDate|| new Date(person.birthDate) < deathDate)
+          this.value.gender !== person.gender &&
+          (!this.value.dieDate || !person.birthDate || deathDate > partnerBirthDate) &&
+          (!this.value.birthDate || !person.dieDate || birthDate < partnerDeathDate)
         )
       }
       return this.filteredPersons(customFilter) || []
     },
-    children() {
+    childrens () {
       const customFilter = (person) => {
-        const birthDate = new Date(this.person.birthDate)
-        const deathDate = new Date(this.person.dieDate)
+        const childBirthDate = this.formatDate(person.birthDate)
+        const childDeathDate = this.formatDate(person.dieDate)
+        const deathDate = this.formatDate(this.value.dieDate)
+        const birthDate = this.formatDate(this.value.birthDate)
         return (
-          person.birthDate > this.person.birthDate &&
-          (!person.dieDate || new Date(person.dieDate) >birthDate) &&
-          (!person.birthDate|| new Date(person.birthDate) < deathDate)
+          birthDate > childBirthDate &&
+          (!this.value.dieDate || !person.birthDate || deathDate > childBirthDate) &&
+          (!this.value.birthDate || !person.dieDate || birthDate < childDeathDate)
         )
       }
       return this.filteredPersons(customFilter) || []
@@ -354,86 +361,96 @@ export default {
         ...param
       })
     },
-    setMilitaryForm(updatedMilitary, index) {
+    formatDate(date) {
+      if (date) {
+        const getYear = parseInt(date.slice(6,10))
+        const getMonth = parseInt(date.slice(3,5))
+        const getDay = parseInt(date.slice(0,2))
+        return new Date(getYear, getMonth, getDay)
+      }
+      return null
+    },
+
+    setMilitaryForm (updatedMilitary, index) {
       const newValue = { ...this.value }
       newValue.militaries[index] = updatedMilitary
       newValue.militaries = [...newValue.militaries]
       this.$emit('change', newValue)
     },
-    addMilitaryForm() {
+    addMilitaryForm () {
       const newValue = { ...this.value }
-      newValue.militaries.push(emptyMilitary)
+      newValue.militaries.push(emptyMilitary())
       this.$emit('change', newValue)
     },
-    removeMilitaryForm(index) {
+    removeMilitaryForm (index) {
       const newValue = { ...this.value }
       newValue.militaries.splice(index, 1)
       this.$emit('change', newValue)
     },
-    setWeddingForm(updatedWedding, index) {
+
+    setWeddingForm (updatedWedding, index) {
       const newValue = { ...this.value }
       newValue.weddings = [...newValue.weddings]
       newValue.weddings[index] = updatedWedding
       this.$emit('change', newValue)
     },
-    addWeddingForm() {
+    addWeddingForm () {
       const newValue = { ...this.value }
-      newValue.weddings.push(emptyWedding)
+      newValue.weddings.push(emptyWedding())
       this.$emit('change', newValue)
     },
-    removeWeddingForm(index) {
+    removeWeddingForm (index) {
       const newValue = { ...this.value }
       newValue.weddings.splice(index, 1)
       this.$emit('change', newValue)
     },
-    setChildForm(updatedChild, index) {
+
+    setChildForm (updatedChild, index) {
       const newValue = { ...this.value }
       newValue.children = [...newValue.children]
       newValue.children[index] = updatedChild
       this.$emit('change', newValue)
     },
-    addChildForm() {
+    addChildForm () {
       const newValue = { ...this.value }
-      newValue.children.push({
-        child: ''
-      })
+      newValue.children.push({ child: '' })
       this.$emit('change', newValue)
     },
-    removeChildForm(index) {
+    removeChildForm (index) {
       const newValue = { ...this.value }
       newValue.children.splice(index, 1)
       this.$emit('change', newValue)
     },
     
-    setEducationForm(updatedEducation, index) {
+    setEducationForm (updatedEducation, index) {
       const newValue = { ...this.value }
       newValue.educations = [...newValue.educations]
       newValue.educations[index] = updatedEducation
       this.$emit('change', newValue)
     },
-    addEducationForm() {
+    addEducationForm () {
       const newValue = { ...this.value }
-      newValue.educations.push(emptyEducation)
+      newValue.educations.push(emptyEducation())
       this.$emit('change', newValue)
     },
-    removeEducationForm(index) {
+    removeEducationForm (index) {
       const newValue = { ...this.value }
       newValue.educations.splice(index, 1)
       this.$emit('change', newValue)
     },
 
-    setWorkForm(updatedWork, index) {
+    setWorkForm (updatedWork, index) {
       const newValue = { ...this.value }
       newValue.works = [...newValue.works]
       newValue.works[index] = updatedWork
       this.$emit('change', newValue)
     },
-    addWorkForm() {
+    addWorkForm () {
       const newValue = { ...this.value }
-      newValue.works.push(emptyWork)
+      newValue.works.push(emptyWork())
       this.$emit('change', newValue)
     },
-    removeWorkForm(index) {
+    removeWorkForm (index) {
       const newValue = { ...this.value }
       newValue.works.splice(index, 1)
       this.$emit('change', newValue)
@@ -482,4 +499,3 @@ export default {
   }
 }
 </style>
- 
