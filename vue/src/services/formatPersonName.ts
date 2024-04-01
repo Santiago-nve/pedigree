@@ -3,7 +3,7 @@ import { Person } from '@/types/person'
 export function formatPersonName(person: Person, config: { access?: boolean; short?: boolean;} = {}): string {
   const { access, short } = config
   const parts = []
-  const { secondName, firstName, patronymicName } = person
+  const { secondName, firstName, patronymicName, maidenName } = person
 
   const maskFio = (str: string): string => {
     if (!str || str.length === 0) {
@@ -36,6 +36,15 @@ export function formatPersonName(person: Person, config: { access?: boolean; sho
       parts.push(maskFio(patronymicName))
     } else {
       parts.push(patronymicName)
+    }
+  }
+
+  // Добавление девичьей фамилии, если присутствует
+  if (maidenName) {
+    if (access && person.access) {
+      parts.push(maskFio(maidenName))
+    } else {
+      parts.push(`(${maidenName})`)
     }
   }
 
