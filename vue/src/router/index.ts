@@ -73,11 +73,10 @@ const router = new VueRouter({
 
 const DEFAULT_TITLE = 'Родословная';
 router.afterEach((to, from) => {
-  
     Vue.nextTick(() => {
       if(to.params.id && to.name == RouteNames.PERSON || to.name == RouteNames.EDIT_PERSON){
         const personId = to.params.id;
-        const person = store.modules.persons.state.persons.find((person: { id: string }) => person.id === personId);
+        const person = store.modules.persons.getters.getPersonById(store.modules.persons.state)(personId);
         const pageTitle = person ? formatPersonName(person, {short: false}) : to.meta?.title;
         document.title = pageTitle ? `${pageTitle} - ${DEFAULT_TITLE}` : DEFAULT_TITLE;
       }
