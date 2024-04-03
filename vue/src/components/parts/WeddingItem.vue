@@ -1,7 +1,7 @@
 <template>
   <div class="wedding-card">
-    <div class="wedding-card__partner">{{ fullName }}</div>
-    <div class="wedding-card__date">
+    <div class="wedding-card__header">{{ fullName }}</div>
+    <div class="wedding-card__grey-txt">
       {{ wedding.startDate }}<template v-if="wedding.endDate"> - {{ wedding.endDate }}</template>
     </div>
   </div>
@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { formatPersonName } from '@/services/formatPersonName';
+import { formatPersonName } from '@/services/formatPersonName'
 
 export default {
   name: 'WeddingItem',
@@ -38,31 +38,25 @@ export default {
 
 <style scoped lang ="less">
 .wedding-card {
-  background-color: #f5f5f5;
-  box-shadow: 1.5px 7px 5px 1.5px rgba(0, 0, 0, 0.1), -1.5px 7px 5px -1.5px rgba(0, 0, 0, 0.2);
   border-radius: 24px;
-  display: grid;
-  grid-gap: 15px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
   margin-bottom: 15px;
   padding: 20px;
   padding-left: 25px;
-  margin-bottom: 10px;
-  text-align: center;
-  max-width: 400px;
+  font-size: 20px;
+  white-space: normal;
+  font-family: 'Inter', sans-serif;
 
-  &__partner {
-    font-family: 'Inter', sans-serif;
+  &__header {
     color: #000000;
-    grid-column: span 2;
-    white-space: nowrap;
     font-weight: 700;
   }
-
-  &__date {
-    font-family: 'Inter', sans-serif;
+  
+  &__grey-txt {
     color: #757575;
-    font-weight: 700;
-    white-space: nowrap;
+    font-size: 14px;
   }
 }
 </style>
